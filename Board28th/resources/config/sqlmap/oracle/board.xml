@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.BoardDAO">
+	<insert id="insertBoard" parameterType="board">
+	    <selectKey keyProperty="no" order="BEFORE" resultType="int">
+	        select s86_board_no.nextval from dual
+	    </selectKey>
+	    insert into t86_board(           
+		    no, title, writer, content   
+		) values (                       
+		    #{no}, #{title}, #{writer}, #{content} 
+		)                               
+	</insert>
+	
+	<update id="updateBoard" parameterType="board">
+		update t86_board 
+		   set title = #{title},
+		       content = #{content}
+		 where no = #{no}    	    
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+	    delete
+	      from t86_board
+	     where no = #{no} 
+	</delete>
+	
+	<resultMap id="boardMap" type="board">
+	    <result column="no" property="no" />
+	    <result column="title" property="title" />
+	    <result column="writer" property="writer" />
+	    <result column="content" property="content" />
+	    <result column="reg_date" property="regDate" />
+	</resultMap>
+	
+	<select id="selectBoard" resultMap="boardMap">
+	    select *         
+		  from t86_board  
+		 order by no desc 
+	</select>
+	
+	<select id="selectBoardByNo" parameterType="int" 
+	                             resultMap="boardMap">
+	    select *         
+		  from t86_board  
+		 where no = #{no}
+	</select>
+	
+	<insert id="insertBoardFile" parameterType="boardFile">
+		insert into t86_board_file(
+			file_no,   no,         ori_file_name, real_file_name, 
+			file_path, file_size
+		) values (
+			s86_board_file_no.nextVal, #{no}, #{oriFileName}, #{realFileName},
+			#{filePath}, #{fileSize}		
+		)
+	</insert>
+	
+	<select id="selectBoardFileByNo" parameterType="int" 
+	        resultType="boardFile">
+	    select file_no as fileNo,
+	           no,
+	           ori_file_name as oriFileName,
+	           real_file_name as realFileName,
+	           file_path as filePath,
+	           file_size as fileSize
+	      from t86_board_file
+	     where no = #{no}      
+	</select>
+	
+	<!-- 댓글 처리 DAO 시작 -->
+	<!-- ################################# -->	
+	<insert id="insertComment" parameterType="comment">
+		insert into t86_comment(
+			comment_no, no, id, content
+		) values (
+			s86_comment_no.nextVal, #{no}, #{id}, #{content}
+		)
+	</insert>
+	
+	<select id="selectCommentByNo" parameterType="int" 
+	        resultType="comment">
+	    select comment_no as commentNo,
+	           no,
+	           id,
+	           content,
+	           reg_date as regDate
+	      from t86_comment
+	     where no = #{no}      
+	</select>
+	
+	<delete id="deleteComment" parameterType="int">
+	    delete 
+	      from t86_comment
+	     where comment_no = #{commentNo}
+	</delete>
+	
+	<update id="updateComment" parameterType="comment">
+	    update t86_comment
+	       set content = #{content}
+	     where comment_no = #{commentNo}
+	</update>
+	<!-- ################################# -->	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
