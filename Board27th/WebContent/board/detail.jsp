@@ -79,7 +79,7 @@
 	// 댓글 목록 조회
 	function commentList() {
 		$.ajax({
-			url: "/LecBoard/board/commentList.do",
+			url: "${pageContext.request.contextPath}/board/commentList.do",
 			data: {no: "${board.no}"},
 			dataType: "json"
 		})
@@ -123,7 +123,7 @@
 	$("#crForm").submit(function () {
 		var f = document.querySelector("#crForm");
 		$.ajax({
-			url: "/LecBoard/board/commentRegist.do",
+			url: "${pageContext.request.contextPath}/board/commentRegist.do",
 			type: "POST",
 			data: {
 				no: "${board.no}", 
@@ -143,7 +143,7 @@
 	
 	function commentDelete(commentNo) {
 		$.ajax({
-			url: "/LecBoard/board/commentDelete.do",
+			url: "${pageContext.request.contextPath}/board/commentDelete.do",
 			data: {
 				no: "${board.no}", 
 				commentNo: commentNo
@@ -172,7 +172,7 @@
 		var commentNo = $parent.find("input").val();
 		console.log(content, commentNo);
 		$.ajax({
-			url: "/LecBoard/board/commentUpdate.do",
+			url: "${pageContext.request.contextPath}/board/commentUpdate.do",
 			data: {
 				commentNo: commentNo,
 				content: content				
